@@ -21,7 +21,9 @@ __status__ = "Production"
 
 import app
 from app import print_verbose
-from general import x
+from general import x,generate_password
+import string
+
 from installMysql import mysql_exec
 import version
 
@@ -123,3 +125,14 @@ def create_user(username, password, database, privileges = "ALL PRIVILEGES"):
         "'{0}'@'localhost' IDENTIFIED BY '{1}' ".format(username, password),
         True
     )
+def setup_sql_db(username,database,dumpfile):
+    '''
+    Setup database with user and password. And loads database with dumpfile
+    Returns the generated sql password
+    '''
+    sql_password = generate_password(20, string.letters + string.digits)
+    mysql_exec("CREATE DATABASE {0}".format(database),'root')
+    create_user(username,sql_password,database)
+    dumpfile_path= app.SYCO_PATH + "usr/syco-private/var/sql/"+dumpfile 
+    x('mysql -uroot -p"{0}" "{1}" < "{2}"'.format(app.get_mysql_root_password(), database, dumpfile_path))
+    return sql_password

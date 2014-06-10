@@ -57,5 +57,5 @@ def uninstall_mariadb(args):
 	'''
 	Uninstalling MariaDb server
 	'''
-	x("yum remove MariaDB-server MariaDB-client -y")
+	x("yum remove MariaDB-server MariaDB-client MariaDB-common -y")
 	x("\\rm /etc/yum.repos.d/MariaDB.repo")
