@@ -48,13 +48,17 @@ import iptables
 SCRIPT_VERSION = 1
 
 MODSEC_INSTALL_FILE = "modsecurity-apache_2.8.0"
+<<<<<<< HEAD
 MODSEC_REPO_URL = "https://www.modsecurity.org/tarball/2.8.0/" + MODSEC_INSTALL_FILE + ".tar.gz"
+=======
+MODSEC_REPO_URL = "https://www.modsecurity.org/tarball/2.8.0/"+MODSEC_INSTALL_FILE+".tar.gz"
+>>>>>>> ef61aa47aff814209d94db13079858734c773a6a
 
 MODSEC_MD5_FILE = MODSEC_INSTALL_FILE + ".tar.gz.sha256"
 MODSEC_MD5_REPO_URL = MODSEC_REPO_URL + ".sha256"
 
-MODSEC_RULES_FILE = "v2.2.6"
-MODSEC_RULES_URL = "https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/{0}.tar.gz".format(MODSEC_RULES_FILE)
+MODSEC_RULES_FILE = "Latest"
+MODSEC_RULES_URL = "https://github.com/SpiderLabs/owasp-modsecurity-crs/tarball/master"
 
 
 def build_commands(commands):
@@ -200,7 +204,8 @@ def _update_modsec_rules():
   x("rm -rf /etc/httpd/rules_tmp")
 
   # Install customized rules.
-  x("cp " + app.SYCO_PATH + "var/httpd/modsecurity.d/* /etc/httpd/modsecurity.d")
+  x("cp " + app.SYCO_PATH + "var/httpd/modsecurity.d/modsecurity_crs_10_config.conf /etc/httpd/modsecurity.d/")
+  x("cp " + app.SYCO_PATH + "var/httpd/modsecurity.d/modsecurity_syco_10_* /etc/httpd/modsecurity.d/")
 
 def _enable_se_linux():
   x("/usr/sbin/setsebool -P httpd_can_network_connect=1")
