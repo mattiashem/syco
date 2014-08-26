@@ -47,11 +47,11 @@ import iptables
 # once on the same host.
 SCRIPT_VERSION = 1
 
-MODSEC_INSTALL_FILE = "modsecurity-apache_2.7.1"
-MODSEC_REPO_URL = "https://github.com/downloads/SpiderLabs/ModSecurity/" + MODSEC_INSTALL_FILE + ".tar.gz"
+MODSEC_INSTALL_FILE = "modsecurity-apache_2.8.0"
+MODSEC_REPO_URL = "https://www.modsecurity.org/tarball/2.8.0/" + MODSEC_INSTALL_FILE + ".tar.gz"
 
-MODSEC_MD5_FILE = MODSEC_INSTALL_FILE + ".tar.gz.md5"
-MODSEC_MD5_REPO_URL = MODSEC_REPO_URL + ".md5"
+MODSEC_MD5_FILE = MODSEC_INSTALL_FILE + ".tar.gz.sha256"
+MODSEC_MD5_REPO_URL = MODSEC_REPO_URL + ".sha256"
 
 MODSEC_RULES_FILE = "v2.2.6"
 MODSEC_RULES_URL = "https://github.com/SpiderLabs/owasp-modsecurity-crs/archive/{0}.tar.gz".format(MODSEC_RULES_FILE)
@@ -163,7 +163,7 @@ def _install_mod_security():
     general.download_file(MODSEC_MD5_REPO_URL)
 
     os.chdir(app.INSTALL_DIR)
-    signature = x("md5sum -c " + MODSEC_MD5_FILE)
+    signature = x("sha256sum -c " + MODSEC_MD5_FILE)
     if (MODSEC_INSTALL_FILE + '.tar.gz: OK' not in signature):
       raise Exception("Invalid signature.")
 
