@@ -39,11 +39,11 @@ def install_wordpress(args):
 	'''
 
 	#Basic setup for database
-	#x('yum install mysql-server y')
-	#x('/etc/init.d/mysqld restart')
-	#x('mysql -e "CREATE DATABASE wordpress;"')
+	x('yum install mysql-server y')
+	x('/etc/init.d/mysqld restart')
+	x('mysql -e "CREATE DATABASE wordpress;"')
 	#x('mysql -e "CREATE USER wpuser@localhost IDENTIFIED BY \'password\';"')
-	#x('mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpressuser@localhost IDENTIFIED BY \'password\';"')
+	#x('mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO wpuser@localhost IDENTIFIED BY \'password\';"')
 	#x('mysql -e "FLUSH PRIVILEGES;"')
 
 
