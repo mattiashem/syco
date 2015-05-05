@@ -35,7 +35,7 @@ def build_commands(commands):
     Defines the commands that can be executed through the syco.py shell script.
 
     '''
-    commands.add("install-java-rpm", install_java, help="Install/configure Java.")
+    commands.add("install-java-rpm", install_java, help="Install/configure Java. (syco install-mysql b13 8u31 (where b13 is jdk_extensionand 8u31 is jdk_version))")
 
 
 def install_java(args):
@@ -45,7 +45,7 @@ def install_java(args):
 	'''
 
 	if (len(args) != 3):
-		raise Exception("syco install-mysql b13 8u31 jdk_extension, jdk_version http://www.oracle.com/technetwork/java/javase/downloads/index.html")
+		raise Exception("syco install-mysql b13 8u31 (where b13 is jdk_extensionand 8u31 is jdk_version http://www.oracle.com/technetwork/java/javase/downloads/index.html)")
 	JDK_VERSION = args[2]
 	JDK_EXTENSION = args[1]
 	x('yum install wget -y')
