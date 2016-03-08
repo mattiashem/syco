@@ -30,6 +30,7 @@ SCRIPT_VERSION = 1
 def build_commands(commands):
     commands.add("install-ldapmysql", install_ldapmysql, help="Install Openldap server with mysql backend")
     commands.add("unistall-ldapmysql", unistall_ldapmysql, help="Uninstall Openldap Server with mysql backend")
+    commands.add("update-db-ldapmysql", update-db, help="Reinstall the db")
 
 
 def install_ldapmysql(args):
@@ -68,12 +69,15 @@ def install_ldapmysql(args):
       x('odbcinst -j')
       x('\cp -f {0}var/ldap/odbc.ini /etc/odbc.ini'.format(app.SYCO_PATH))
       x("sed -i 's/SQL_PASS/{0}/g' /etc/odbc.ini".format(password))
-      x('\cp -f {0}var/ldap/init-sql.sql /tmp/init-sql.sql'.format(app.SYCO_PATH))
-      x("sed -i 's/SQL_PASS/{0}/g' /tmp/init-sql.sql".format(password))
+      x('\cp -f {0}usr/syco-private/var/ldap/init-user.sql /tmp/init-user.sql'.format(app.SYCO_PATH))
+      x('\cp -f {0}usr/syco-private/var/ldap/init-db.sql /tmp/init-db.sql'.format(app.SYCO_PATH))	
+      x("sed -i 's/SQL_PASS/{0}/g' /tmp/init-sql.user".format(password))
       x('yum install mysql-server -y')
       x('service mysqld restart')
-      x('mysql < /tmp/init-sql.sql')
-      #x("rm -rf /tmp/init-sql.sql")
+      x('mysql < /tmp/init-user.sql')
+      x('mysql < /tmp/init-db.sql')
+      x("rm -rf /tmp/init-user.sql")
+      x("rm -rf /tmp/init-db.sql")
 
       #Starting
       x('\cp -f {0}var/ldap/slapd /etc/init.d/slapd'.format(app.SYCO_PATH))
@@ -83,7 +87,11 @@ def install_ldapmysql(args):
       x('/etc/init.d/slapd start')
 
       
-
+def update_db():
+     x('\cp -f {0}usr/syco-private/var/ldap/init-db.sql /tmp/init-db.sql'.format(app.SYCO_PATH))
+     x('mysql < /tmp/init-db.sql')
+     x("rm -rf /tmp/init-db.sql")
+     x('/etc/init.d/slapd restart')
 
 
 def unistall_ldapmysql(args):

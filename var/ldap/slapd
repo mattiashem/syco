@@ -18,7 +18,7 @@ LOCKFILE=/var/lock/subsys/$prog
 
 start() {
         echo -n "Starting $prog: "
-        /opt/openldap/servers/slapd/slapd  -h 'ldap:/// ldapi:///' -f /etc/openldap/slapd.conf
+        /opt/openldap/servers/slapd/slapd -s 64 -h 'ldap:/// ldapi:///' -f /etc/openldap/slapd.conf 
         RETVAL=$?
         [ $RETVAL -eq 0 ] && touch $LOCKFILE
         echo
@@ -27,8 +27,8 @@ start() {
 
 stop() {
         echo -n "Shutting down $prog: "
-        echo -n "Dont work find and kill pid"
-        RETVAL=$?
+        pidof slapd | xargs kill -9  
+	RETVAL=$?
         [ $RETVAL -eq 0 ] && rm -f $LOCKFILE
         echo
         return $RETVAL
@@ -53,6 +53,7 @@ case "$1" in
         ;;
     restart)
         stop
+	start
         ;;
     *)
         echo "Usage: $prog {start|stop|status|restart}"
